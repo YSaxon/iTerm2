@@ -38,6 +38,8 @@
 
 + (void)nameForNewArrangement:(void (^)(NSString *))completion;
 + (void)selectNameAndWhetherToIncludeContentsWithCompletion:(void (^)(NSString *name, iTermSavePanelItem *saveItem))completion;
++ (NSArray<NSString *> *)normalizedProjectPathComponentsFromString:(NSString *)path;
++ (NSString *)displayNameForProjectPathComponents:(NSArray<NSString *> *)components;
 
 - (IBAction)setDefault:(id)sender;
 - (IBAction)deleteSelectedArrangement:(id)sender;

@@ -154,7 +154,28 @@ static NSInteger sWindowArrangementGeneration;
 
 + (NSArray *)allNames {
     NSArray *keys = [[WindowArrangements arrangements] allKeys];
-    return [keys sortedArrayUsingSelector:@selector(compare:)];
+    return [keys sortedArrayUsingComparator:^NSComparisonResult(NSString *lhs, NSString *rhs) {
+        return [lhs localizedStandardCompare:rhs];
+    }];
+}
+
++ (NSArray<NSString *> *)pathComponentsForArrangementName:(NSString *)name {
+    NSArray<NSString *> *components = [name componentsSeparatedByString:@"/"];
+    NSMutableArray<NSString *> *filtered = [NSMutableArray array];
+    for (NSString *component in components) {
+        NSString *trimmed = [component stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (trimmed.length > 0) {
+            [filtered addObject:trimmed];
+        }
+    }
+    if (filtered.count == 0) {
+        return @[ name ?: @"" ];
+    }
+    return filtered;
+}
+
++ (NSString *)displayNameForArrangementName:(NSString *)name {
+    return [[self pathComponentsForArrangementName:name] lastObject] ?: @"";
 }
 
 + (void)refreshRestoreArrangementsMenu:(NSMenuItem *)menuItem
@@ -321,7 +342,7 @@ static NSInteger sWindowArrangementGeneration;
     }
 
     NSString *value = [self nameAtIndex:row];
-    result.stringValue = value;
+    result.stringValue = [WindowArrangements displayNameForArrangementName:value];
     result.delegate = self;
     result.editable = YES;
     return result;

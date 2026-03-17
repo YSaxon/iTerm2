@@ -31,6 +31,11 @@
 
 + (NSArray *)allNames;
 
+// Project-like hierarchical names use '/' as a separator, e.g.
+// "Work/Backend/Release Prep".
++ (NSArray<NSString *> *)pathComponentsForArrangementName:(NSString *)name;
++ (NSString *)displayNameForArrangementName:(NSString *)name;
+
 + (void)refreshRestoreArrangementsMenu:(NSMenuItem *)menuItem
                           withSelector:(SEL)selector
                        defaultShortcut:(NSString *)defaultShortcut

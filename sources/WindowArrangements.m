@@ -453,4 +453,25 @@ static NSInteger sWindowArrangementGeneration;
     [self updateActionsEnabled];
 }
 
+
++ (NSArray<NSString *> *)normalizedProjectPathComponentsFromString:(NSString *)path {
+    NSArray<NSString *> *parts = [path componentsSeparatedByString:@"/"];
+    NSMutableArray<NSString *> *result = [NSMutableArray array];
+    for (NSString *part in parts) {
+        NSString *trimmed = [part stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (trimmed.length > 0) {
+            [result addObject:trimmed];
+        }
+    }
+    return result;
+}
+
++ (NSString *)displayNameForProjectPathComponents:(NSArray<NSString *> *)components {
+    if (components.count == 0) {
+        return @"Root";
+    }
+    return [components componentsJoinedByString:@" ▸ "];
+}
+
+
 @end
